@@ -75,7 +75,7 @@ The advantage of this is that you do not need any external XR libraries that cou
 
 Before proceeding to the next steps, the project should be able to produce a working Android .apk build, which runs on the Quest without issues.
 
-> Note: When testing this on your Android phone later, the generated app should open without any issues and the sample scene should load. However, many phones, including newer ones, only support USB 2.0 which will result in your phone not detecting the RealSense camera at all
+> Note: When testing this on your Android phone later, the generated app should open without any issues and the sample scene should load. However, many phones, including newer ones, only support USB 2.0 which will result in your phone not detecting the RealSense camera at all. For the Meta Quest 3, this is not a problem, as it supports USB 3.
 
 ### Prerequisites #2: Intel RealSense wrappers
 This guide assumes that the Intel RealSense Unity wrappers [**v2.55.1**](https://github.com/IntelRealSense/librealsense/releases/tag/v2.55.1) are imported succesfully in Unity 2022.3.x without errors. The reason for choosing this version is that at the time of writing (March 2025), this is the newest version which provides a unitypackage. However, it should also be possible to generate a unitypackage for a newer version.
