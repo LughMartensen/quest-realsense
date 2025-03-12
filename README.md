@@ -96,19 +96,26 @@ In general, in order to allow a Unity project to access the RealSense cameras wh
 
 In this case, because we are targeting Android (the OS of Meta Quest) we will have to build the **librealsense.aar** plugin from the provided Android Java source code, based on the [official guidelines](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/android). 
 
-In my experience, building from the Windows Command Prompt as an Administrator, using the ```gradlew assembleRelease``` [command](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/android#build-with-gradle) proved to be the most straightforward, less error-prone, way:
+In my experience, building from the Windows Command Prompt as an Administrator, using the ```gradlew assembleRelease``` [command](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/android#build-with-gradle) proved to be the most straightforward, less error-prone, way. However, we need to make some small adjustments:
 
 1. Make sure you have Gradle version XX installed. To do so, open a terminal and run ```gradle --version```
 2. Make sure you have JRE version XX installed. To do so, open a terminal and run ```java --version```
+3. Download the source code of the librealsense source code as a zip file [**here**](https://github.com/IntelRealSense/librealsense/releases/tag/v2.55.1)
+4. Navigate to ```<librealsense_root_dir>/?``` and add a file with the name ```??.??```. Paste the following content into the file: ```content```.
+5. In the file ```<librealsense_root_dir>/?```, we need to make the following adjustments: TODO
+6. Navigate to ```<librealsense_root_dir>/wrappers/android```. Run ```gradle setup```.
+7. Run ```gradlew assembleRelease```.
 
 ![](https://github.com/GeorgeAdamon/quest-realsense/blob/master/resources/img-gradle-build.png)
 
-A succesful build process should take around 10 minutes on a decent machine, and look like this:
+A successful build process should take around 10 minutes on a decent machine, and look like this:
 ![](https://github.com/GeorgeAdamon/quest-realsense/blob/master/resources/img-gradle-build-02.png)
 ![](https://github.com/GeorgeAdamon/quest-realsense/blob/master/resources/img-gradle-build-04.png)
 
 If the build is succesful, the generated .aar file will be located in 
 ```<librealsense_root_dir>/wrappers/android/librealsense/build/outputs/aar```.
+
+The reason for these adjustments is that in newer Unity versions, we can only build for ARMv7 when choosing Mono (which we have to because RealSense library does not support Unity's IL2CPP library). However, the configuration for compiling the realsense library for Android assumes Arm64 as the target architecture. Changing this is the fastest solution to the problem. You could also try to use an older Unity version, but in my experience, this causes other issues.
 
 ### Unity Side
 The generated **librealsense.aar** file should be placed inside your Unity project, in the _**Assets / RealSenseSDK2.0 / Plugins**_ directory, alongside the Intel.RealSense.dll and librealsense2.dll. A succesful setup should look like this:
@@ -150,6 +157,7 @@ public class AndroidPermissions : MonoBehaviour
 }
 ```
 
+_**Attention:**_ Note that this step is also necessary when opening a RealSense sample scene.
 
 ## Step 4: Using Quest-friendly shaders
 As stated [in the original discussion](https://github.com/IntelRealSense/librealsense/issues/4155#issuecomment-522884739), if you are using any other XR mode apart from **Multi-Pass Stereo**, Geometry Shaders will not work on the Quest.
