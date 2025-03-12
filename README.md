@@ -1,23 +1,18 @@
-# Oculus Quest - Intel RealSense Integration
-Integration of Intel RealSense depth cameras with the Oculus Quest standalone VR headset using Unity.
+# Meta Quest 3 - Intel RealSense Integration
+Integration of Intel RealSense depth cameras with the Meta Quest 3 standalone VR headset using Unity.
 
 
 ## Foreword
 
 <br/>
 
-This project consolidates the knowledge gained while attempting to power & operate a RealSense D435i camera directly from an Oculus Quest VR headset. 
+This project consolidates the knowledge gained while attempting to power & operate an arbitrary RealSense camera directly from a Meta Quest 3 VR headset.
 
-At the time of this attempt (5th-12th of June 2019), no prior work on this specific problem was available in the public realm, and the solution wouldn't be possible without the valuable contribution of members of the Intel development team.
+The solution is based on an [existing repository](https://github.com/GeorgeAdamon/quest-realsense) that makes an Intel Realsense D435i compatible with an Oculus Quest (1).
 
-The discussion which led to the solution, is available [here](https://github.com/IntelRealSense/librealsense/issues/4155), for future reference.
+Some adjustments had to made to the process to get everything to work, due to the newer operating system and Unity version.
 
-Aim of this repository is to describe the steps necessary to achieve the Quest-RealSense integration inside Unity 2019.x, as well as provide a sample Unity project, showcasing the method.
-
-
-_George Adamopoulos_
-
-_23 of June 2019_
+Aim of this repository is to describe the steps necessary to achieve the Quest-RealSense integration inside Unity 2022.3.x, as well as provide a sample Unity project, showcasing the method.
 
 <br/>
 
@@ -25,15 +20,18 @@ _23 of June 2019_
 
 The project was tested in the following environments.
 
-**Development environment:**
+**Unity environment:**
 
 | Label | Info  |
 |----------------------------|-----------------|
-| Operating System & Version | Windows 10 1803 |
-| Language                   | C#              | 
-| Unity Version              | 2019.1.4f1      |
+| Unity Version              | 2022.3.42f1     |
 | Graphics API               | OpenGLES3       |
-| Scripting API Version      | .NET 4.x        |
+| Minimum API Level          | 32 (Android 12) |
+| Target API Level           | Automatic       |
+| Graphics API               | OpenGLES3       |
+| Scripting Backend          | Mono            |
+| API Compatability Level    | .NET Framework  |
+| Target Architecture Level  | ARMv7           |
 
 <br/>
 
@@ -41,30 +39,46 @@ The project was tested in the following environments.
 
 | Label  |  Info  |
 |----------------------------|-----------------|
-| Camera Model               | D435i           |
-| Firmware Version           | 5.11.6.200 +    | 
-| SDK Version                | 2.22.0 +        | 
+| Camera Model               | D405            |
+| SDK Version                | 2.55.1          | 
 
 <br/>
 
-**Oculus Quest Information:**
+**Meta Quest Information:**
 
 | Label  |  Info  |
 |----------------------------|-----------------|
-| Headset Model              | Quest (May 2019)|
+| Headset Model              | Quest3          |
 | Headset Version            | 256550.6170.5 + | 
 | Unity Package Version      | 1.36 +          | 
 
+<br/>
 
+**Compiler Information:**
+
+| Label  |  Info  |
+|----------------------------|-----------------|
+| Gradle Version             | ?               |
+| JRE Version                | ?               |
 
 ## Step 1: Project Setup (Windows)
-### Prerequisites #1: Oculus VR
-This guide assumes that the necessary steps for setting-up the Unity development environment for the Oculus Quest have been completed, as described in the official Oculus Quest documentation: [[1]](https://developer.oculus.com/documentation/quest/latest/concepts/unity-build-android/) [[2]](https://developer.oculus.com/documentation/quest/latest/concepts/unity-mobileprep/)
+### Prerequisites #1.1: Meta VR
+This guide assumes that the necessary steps for setting-up the Unity development environment for the Meta Quest 3 have been completed, as described in the official Meta Quest documentation: [[1]](https://developers.meta.com/horizon/documentation/unity/unity-development-overview/) [[2]](https://unity.com/blog/engine-platform/get-started-developing-for-quest-3-with-unity) [[3]](https://medium.com/antaeus-ar/creating-a-mixed-reality-app-for-meta-quest-3-using-unity-b8cbc87a24e7).
+
+Before proceeding to the next steps, the project should be able to produce a working Android .apk build, which runs on the Quest without issues.
+
+### Prerequisites #1.2: Android App
+
+Alternatively, you can create a simple 2D Android app with Unity that can run on your phone [[4]](https://docs.unity3d.com/Manual/android-getting-started.html). The generated .apk can be loaded to your Quest using the software \emph{sidequest} [[5]](https://side.quest/) [[6]](https://www.youtube.com/watch?v=ee_ltiOtHzo).
+
+The advantage of this is that you do not need any external XR libraries that could cause shader problems or incompatibilites with certain android versions. This eliminates error sources and makes it easier to debug potential errors in the RealSense SDK. Additionaly, we can simply open the RealSense sample scenes without needing to add an XR Rig.
 
 Before proceeding to the next steps, the project should be able to produce a working Android .apk build, which runs on the Quest without issues.
 
 ### Prerequisites #2: Intel RealSense wrappers
-This guide assumes that the latest Intel RealSense Unity wrappers [**package**](https://github.com/IntelRealSense/librealsense/releases/download/v2.20.0/realsense.unitypackage) are imported succesfully in Unity 2019.x without errors. 
+This guide assumes that the Intel RealSense Unity wrappers [**v2.55.1**](https://github.com/IntelRealSense/librealsense/releases/tag/v2.55.1) are imported succesfully in Unity 2022.3.x without errors. The reason for choosing this version is that at the time of writing (March 2025), this is the newest version which provides a unitypackage. However, it should also be possible to generate a unitypackage for a newer version.
+
+To setup the project, download the Intel.RealSense.unitypackage file [**here**](https://github.com/IntelRealSense/librealsense/releases/tag/v2.55.1). In Unity, go to _**Assets > Import Package > Custom package**_ and select the file.
 
 Before proceeding to the next steps, the project should be able to run one of Intel's provided example Scenes in Unity's Play Mode, provided a RealSense device is connected to an appropriate USB port of a Windows machine. More information in the official [realsense repository](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/unity).
 
