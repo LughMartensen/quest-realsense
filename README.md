@@ -69,11 +69,13 @@ Before proceeding to the next steps, the project should be able to produce a wor
 
 ### Prerequisites #1.2: Android App
 
-Alternatively, you can create a simple 2D Android app with Unity that can run on your phone [[4]](https://docs.unity3d.com/Manual/android-getting-started.html). The generated .apk can be loaded to your Quest using the software \emph{sidequest} [[5]](https://side.quest/) [[6]](https://www.youtube.com/watch?v=ee_ltiOtHzo).
+Alternatively, you can create a simple 2D Android app with Unity that can run on your phone [[4]](https://docs.unity3d.com/Manual/android-getting-started.html). The generated .apk can be loaded to your Quest using the software _**sidequest**_ [[5]](https://side.quest/) [[6]](https://www.youtube.com/watch?v=ee_ltiOtHzo).
 
 The advantage of this is that you do not need any external XR libraries that could cause shader problems or incompatibilites with certain android versions. This eliminates error sources and makes it easier to debug potential errors in the RealSense SDK. Additionaly, we can simply open the RealSense sample scenes without needing to add an XR Rig.
 
 Before proceeding to the next steps, the project should be able to produce a working Android .apk build, which runs on the Quest without issues.
+
+(Note: When testing this on your Android phone later, the generated app should open without any issues and the sample scene should load. However, many phones, including newer ones, only support USB 2.0 which will result in your phone not detecting the RealSense camera at all)
 
 ### Prerequisites #2: Intel RealSense wrappers
 This guide assumes that the Intel RealSense Unity wrappers [**v2.55.1**](https://github.com/IntelRealSense/librealsense/releases/tag/v2.55.1) are imported succesfully in Unity 2022.3.x without errors. The reason for choosing this version is that at the time of writing (March 2025), this is the newest version which provides a unitypackage. However, it should also be possible to generate a unitypackage for a newer version.
@@ -92,9 +94,12 @@ According to [this](https://github.com/IntelRealSense/librealsense/issues/4155#i
 ### Build Process
 In general, in order to allow a Unity project to access the RealSense cameras when targeting a platform other than Windows, the appropriate wrappers for this platform need to be built as Native Plugins first, and included in the Unity project.
 
-In this case, because we are targeting Android (the OS of Oculus Quest) we will have to build the **librealsense.aar** plugin from the provided Android Java source code, based on the [official guidelines](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/android). 
+In this case, because we are targeting Android (the OS of Meta Quest) we will have to build the **librealsense.aar** plugin from the provided Android Java source code, based on the [official guidelines](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/android). 
 
 In my experience, building from the Windows Command Prompt as an Administrator, using the ```gradlew assembleRelease``` [command](https://github.com/IntelRealSense/librealsense/tree/master/wrappers/android#build-with-gradle) proved to be the most straightforward, less error-prone, way:
+
+1. Make sure you have Gradle version XX installed. To do so, open a terminal and run ```gradle --version```
+2. Make sure you have JRE version XX installed. To do so, open a terminal and run ```java --version```
 
 ![](https://github.com/GeorgeAdamon/quest-realsense/blob/master/resources/img-gradle-build.png)
 
