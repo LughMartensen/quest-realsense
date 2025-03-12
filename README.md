@@ -75,7 +75,7 @@ The advantage of this is that you do not need any external XR libraries that cou
 
 Before proceeding to the next steps, the project should be able to produce a working Android .apk build, which runs on the Quest without issues.
 
-(Note: When testing this on your Android phone later, the generated app should open without any issues and the sample scene should load. However, many phones, including newer ones, only support USB 2.0 which will result in your phone not detecting the RealSense camera at all)
+> Note: When testing this on your Android phone later, the generated app should open without any issues and the sample scene should load. However, many phones, including newer ones, only support USB 2.0 which will result in your phone not detecting the RealSense camera at all
 
 ### Prerequisites #2: Intel RealSense wrappers
 This guide assumes that the Intel RealSense Unity wrappers [**v2.55.1**](https://github.com/IntelRealSense/librealsense/releases/tag/v2.55.1) are imported succesfully in Unity 2022.3.x without errors. The reason for choosing this version is that at the time of writing (March 2025), this is the newest version which provides a unitypackage. However, it should also be possible to generate a unitypackage for a newer version.
@@ -157,7 +157,7 @@ public class AndroidPermissions : MonoBehaviour
 }
 ```
 
-_**Attention:**_ Note that this step is also necessary when opening a RealSense sample scene.
+> Attention: Note that this step is also necessary when opening a RealSense sample scene.
 
 ## Step 4: Using Quest-friendly shaders
 As stated [in the original discussion](https://github.com/IntelRealSense/librealsense/issues/4155#issuecomment-522884739), if you are using any other XR mode apart from **Multi-Pass Stereo**, Geometry Shaders will not work on the Quest.
