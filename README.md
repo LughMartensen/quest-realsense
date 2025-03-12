@@ -1,4 +1,4 @@
-# Meta Quest 3 - Intel RealSense Integration
+# Meta Quest 3 - Intel RealSense Integration (WIP)
 Integration of Intel RealSense depth cameras with the Meta Quest 3 standalone VR headset using Unity.
 
 
